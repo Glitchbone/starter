@@ -1,0 +1,37 @@
+#!/usr/bin/env node
+
+var fs = require('fs'),
+	arguments = process.argv.slice(2),
+	block = arguments[0],
+	modifiers = arguments[1] ? arguments[1].split(',') : [];
+	
+if (!block) {
+	console.log('ERROR: Missing block argument.\nUsage: ./bem-module block [modifier1,modifierN]');
+	process.exit(1);
+}
+
+var output = '',
+	fileName = '_' + block + '.scss';
+
+if (fs.existsSync(fileName)) {
+	console.log('Module ' + block + ' already exists');
+	process.exit(1);
+}
+
+output += '$module: ".[B]";\n\n#{$module} {\n\n\n\n}'.replace('[B]', block);
+
+modifiers.forEach(function(modifier) {
+	output += '\n\n#{$module}--[M] {\n\n\n\n}'.replace('[M]', modifier);
+});
+
+fs.writeFile(fileName, output, function(err) {
+	
+	if (err) {
+		console.log(err);
+		process.exit(1);
+	} else {
+		console.log('Created module ' + fileName);
+		process.exit(0);
+	}
+	
+});
