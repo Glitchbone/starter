@@ -1,0 +1,13 @@
+/*
+    Single module declaration
+*/
+
+$module: ".my-module";
+ 
+#{$module} {
+    
+    background-color: $my-module-bg-color;
+    padding: 20px;
+    display: inline-block;
+    
+}
