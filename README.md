@@ -24,6 +24,21 @@ Build project in dist folder:
 grunt build
 ```
 
+##SASS structure
+
+├── _modules-list.scss
+├── base
+│   ├── _colors.scss
+│   ├── _fonts.scss
+│   ├── _typography.scss
+│   └── _variables.scss
+├── layout
+│   ├── _global.scss
+│   └── _grid.scss
+├── main.scss
+└── modules
+    └── _my-module.scss
+
 ##Author
 
 **Adrien Glitchbone**
