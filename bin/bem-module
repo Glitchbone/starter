@@ -3,7 +3,10 @@
 var fs = require('fs'),
 	arguments = process.argv.slice(2),
 	block = arguments[0],
-	modifiers = arguments[1] ? arguments[1].split(',') : [];
+	modifiers = arguments[1] ? arguments[1].split(',') : [],
+    sassDir = 'src/css/'
+    modulesDir = sassDir + 'modules/',
+    modulesList = sassDir + '_modules-list.scss';
 	
 if (!block) {
 	console.log('ERROR: Missing block argument.\nUsage: ./bem-module block [modifier1,modifierN]');
@@ -11,7 +14,7 @@ if (!block) {
 }
 
 var output = '',
-	fileName = '_' + block + '.scss';
+	fileName = modulesDir + '_' + block + '.scss';
 
 if (fs.existsSync(fileName)) {
 	console.log('Module ' + block + ' already exists');
@@ -22,6 +25,19 @@ output += '$module: ".[B]";\n\n#{$module} {\n\n\n\n}'.replace('[B]', block);
 
 modifiers.forEach(function(modifier) {
 	output += '\n\n#{$module}--[M] {\n\n\n\n}'.replace('[M]', modifier);
+});
+
+var moduleImport = '\n@import "modules/' + block + '";';
+
+fs.appendFile(modulesList, moduleImport, function(err) {
+    
+	if (err) {
+		console.log(err);
+		process.exit(1);
+	} else {
+		console.log('Updated modules list ' + modulesList);
+	}
+    
 });
 
 fs.writeFile(fileName, output, function(err) {
